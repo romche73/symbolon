@@ -75,6 +75,19 @@
             animation: fadeIn 0.4s ease-out forwards;
         }
 
+        #card-display img {
+            width: 100%;
+            max-width: 280px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
         #card-display h2 {
             color: #2d3748;
             font-size: 1.4rem;
@@ -113,23 +126,28 @@
         const cardsDatabase = [
             {
                 name: "Актер",
-                description: "Сегодня вы должны сыграть какую-то роль (короля, начальника, ребенка и т.д.)"
+                description: "Сегодня вы должны сыграть какую-то роль (короля, начальника, ребенка и т.д.)",
+                image: "images/actor.jpg"
             },
             {
                 name: "Свадьба",
-                description: "Хорошее настроение. Приятная компания. Удачный день"
+                description: "Хорошее настроение. Приятная компания. Удачный день",
+                image: "images/wedding.jpg"
             },
             {
                 name: "Вестник",
-                description: "В этот день вас ожидают перемещения, короткие поездки, много общения, контактов..."
+                description: "В этот день вас ожидают перемещения, короткие поездки, много общения, контактов...",
+                image: "images/messenger.jpg"
             },
             {
                 name: "Симболон",
-                description: "Вам сегодня будет сопутствовать удача, особенно в коллективных делах..."
+                description: "Вам сегодня будет сопутствовать удача, особенно в коллективных делах...",
+                image: "images/symbolon.jpg"
             },
             {
                 name: "Черная Месса",
-                description: "В сегодняшних мероприятиях вам отводится роль пешки"
+                description: "В сегодняшних мероприятиях вам отводится роль пешки",
+                image: "images/black_mass.jpg"
             }
         ];
 
@@ -140,6 +158,7 @@
             const randomIndex = Math.floor(Math.random() * cardsDatabase.length);
             const randomCard = cardsDatabase[randomIndex];
             cardDisplay.innerHTML = `
+                <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
                 <h2><strong>${randomCard.name}</strong></h2>
                 <p>${randomCard.description}</p>
             `;
