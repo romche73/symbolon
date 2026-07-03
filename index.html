@@ -116,21 +116,10 @@
             color: #ffffff;
             font-size: 1.5rem;
             margin-top: 0;
-            margin-bottom: 6px;
+            margin-bottom: 20px;
             font-weight: 700;
             letter-spacing: 0.5px;
             text-align: center;
-        }
-
-        .card-astro {
-            color: #d4af37;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            text-align: center;
-            opacity: 0.9;
         }
 
         .card-description {
@@ -909,7 +898,6 @@
                     <div class="card-result-wrapper">
                         <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
                         <h2><strong>${randomCard.name}</strong></h2>
-                        <div class="card-astro">${randomCard.astro || ""}</div>
                         <p class="card-description">${randomCard.description}</p>
                     </div>
                 `;
