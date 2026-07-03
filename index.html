@@ -33,6 +33,18 @@
                 description: "В сегодняшних мероприятиях вам отводится роль пешки"
             }
         ];
+
+        const drawButton = document.getElementById('draw-card-btn');
+        const cardDisplay = document.getElementById('card-display');
+
+        drawButton.addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * cardsDatabase.length);
+            const randomCard = cardsDatabase[randomIndex];
+            cardDisplay.innerHTML = `
+                <h2><strong>${randomCard.name}</strong></h2>
+                <p>${randomCard.description}</p>
+            `;
+        });
     </script>
 </body>
 </html>
