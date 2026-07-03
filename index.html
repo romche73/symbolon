@@ -9,14 +9,23 @@
 
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f6f8fc 0%, #e9edf6 100%);
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            padding: 40px 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .app-container {
@@ -112,13 +121,144 @@
                 transform: translateY(0);
             }
         }
+
+        /* Modal overlay and content styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content p {
+            color: #2d3748;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+
+        #modal-close-btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #ffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.2);
+            outline: none;
+        }
+
+        #modal-close-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        #modal-close-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer styles */
+        .app-footer {
+            text-align: center;
+            padding: 24px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .app-footer p {
+            color: #4a5568;
+            font-size: 0.95rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        #telegram-btn {
+            display: inline-block;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ffffff;
+            background: #0088cc;
+            padding: 10px 24px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.25);
+        }
+
+        #telegram-btn:hover {
+            background: #0077b3;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(0, 136, 204, 0.35);
+        }
+
+        #telegram-btn:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <h1>Карта дня Симболон</h1>
-        <button id="draw-card-btn">Вытянуть карту</button>
-        <div id="card-display"></div>
+    <main class="main-content">
+        <div class="app-container">
+            <h1>Карта дня Симболон</h1>
+            <button id="draw-card-btn">Вытянуть карту</button>
+            <div id="card-display"></div>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>Хотите получить глубокий индивидуальный расклад?</p>
+        <a id="telegram-btn" href="#" target="_blank">Запустить Telegram-бота</a>
+    </footer>
+
+    <!-- Модальное окно предупреждения -->
+    <div id="disclaimer-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p>Первая карта — это ответ вашего подсознания. Повторные клики — это уже суета ума, пытающаяся найти "удобный" ответ. Но вы всё равно можете продолжить!</p>
+            <button id="modal-close-btn">Я всё понимаю, продолжить</button>
+        </div>
     </div>
 
     <script>
@@ -182,8 +322,13 @@
 
         const drawButton = document.getElementById('draw-card-btn');
         const cardDisplay = document.getElementById('card-display');
+        const modalOverlay = document.getElementById('disclaimer-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
 
-        drawButton.addEventListener('click', () => {
+        let clickCount = 0;
+        let disclaimerShown = false;
+
+        function drawCard() {
             const randomIndex = Math.floor(Math.random() * cardsDatabase.length);
             const randomCard = cardsDatabase[randomIndex];
             cardDisplay.innerHTML = `
@@ -191,6 +336,21 @@
                 <h2><strong>${randomCard.name}</strong></h2>
                 <p>${randomCard.description}</p>
             `;
+        }
+
+        drawButton.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 2 && !disclaimerShown) {
+                modalOverlay.classList.add('active');
+            } else {
+                drawCard();
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            disclaimerShown = true;
+            drawCard();
         });
     </script>
 </body>
