@@ -237,6 +237,94 @@
         #telegram-btn:active {
             transform: translateY(0);
         }
+
+        #draw-card-btn:disabled {
+            background: #a0aec0;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.7;
+        }
+
+        /* Shuffling deck loader styles */
+        .shuffling-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 10px;
+            animation: fadeIn 0.3s ease-out;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .deck-animation {
+            position: relative;
+            width: 150px;
+            height: 220px;
+            margin-bottom: 24px;
+        }
+
+        .loader-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform-origin: bottom center;
+        }
+
+        .card-1 {
+            z-index: 3;
+            animation: shuffle-top 1.5s infinite ease-in-out;
+        }
+
+        .card-2 {
+            z-index: 2;
+            transform: scale(0.95) translateY(-6px) rotate(-3deg);
+            opacity: 0.8;
+            animation: shuffle-mid 1.5s infinite ease-in-out;
+        }
+
+        .card-3 {
+            z-index: 1;
+            transform: scale(0.9) translateY(-12px) rotate(3deg);
+            opacity: 0.6;
+            animation: shuffle-bot 1.5s infinite ease-in-out;
+        }
+
+        .loader-text {
+            color: #764ba2;
+            font-size: 1.05rem;
+            font-weight: 600;
+            animation: pulse-text 1.5s infinite ease-in-out;
+            margin: 0;
+        }
+
+        @keyframes shuffle-top {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            33% { transform: scale(1.03) translate(-35px, -8px) rotate(-8deg); }
+            66% { transform: scale(0.98) translate(8px, 4px) rotate(4deg); }
+        }
+
+        @keyframes shuffle-mid {
+            0%, 100% { transform: scale(0.95) translateY(-6px) rotate(-3deg); }
+            33% { transform: scale(0.98) translate(25px, -4px) rotate(6deg); }
+            66% { transform: scale(0.93) translate(-8px, 0px) rotate(-4deg); }
+        }
+
+        @keyframes shuffle-bot {
+            0%, 100% { transform: scale(0.9) translateY(-12px) rotate(3deg); }
+            33% { transform: scale(0.92) translate(-4px, 4px) rotate(-4deg); }
+            66% { transform: scale(0.88) translate(-15px, -4px) rotate(-6deg); }
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -329,13 +417,34 @@
         let disclaimerShown = false;
 
         function drawCard() {
-            const randomIndex = Math.floor(Math.random() * cardsDatabase.length);
-            const randomCard = cardsDatabase[randomIndex];
+            // Блокируем кнопку на время анимации
+            drawButton.disabled = true;
+            
+            // Показываем анимацию тусования карт
             cardDisplay.innerHTML = `
-                <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
-                <h2><strong>${randomCard.name}</strong></h2>
-                <p>${randomCard.description}</p>
+                <div class="shuffling-loader">
+                    <div class="deck-animation">
+                        <div class="loader-card card-1"></div>
+                        <div class="loader-card card-2"></div>
+                        <div class="loader-card card-3"></div>
+                    </div>
+                    <p class="loader-text">Получаю ответ Вселенной...</p>
+                </div>
             `;
+
+            // Ждем 1.8 секунды, затем показываем случайную карту
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * cardsDatabase.length);
+                const randomCard = cardsDatabase[randomIndex];
+                
+                cardDisplay.innerHTML = `
+                    <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
+                    <h2><strong>${randomCard.name}</strong></h2>
+                    <p>${randomCard.description}</p>
+                `;
+                // Возвращаем активность кнопке
+                drawButton.disabled = false;
+            }, 1800);
         }
 
         drawButton.addEventListener('click', () => {
