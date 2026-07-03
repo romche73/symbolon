@@ -12,7 +12,8 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f6f8fc 0%, #e9edf6 100%);
+            background: radial-gradient(circle at center, #1c0f2d 0%, #06030e 100%);
+            color: #f1f5f9;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -38,35 +39,39 @@
         }
 
         h1 {
-            color: #1a202c;
-            font-size: 1.8rem;
-            margin-bottom: 24px;
+            color: #ffffff;
+            font-size: 1.9rem;
+            margin-bottom: 28px;
             font-weight: 700;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+            letter-spacing: 0.5px;
         }
 
         #draw-card-btn {
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #ffffff;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            padding: 14px 28px;
+            background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 16px 36px;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35), 0 0 15px rgba(212, 175, 55, 0.1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             outline: none;
+            letter-spacing: 0.5px;
         }
 
-        #draw-card-btn:hover {
+        #draw-card-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5), 0 0 20px rgba(212, 175, 55, 0.25);
+            border-color: rgba(212, 175, 55, 0.6);
         }
 
-        #draw-card-btn:active {
+        #draw-card-btn:active:not(:disabled) {
             transform: translateY(0);
-            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
         }
 
         #card-display {
@@ -76,49 +81,88 @@
 
         #card-display:not(:empty) {
             margin-top: 32px;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.4s ease-out forwards;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(212, 175, 55, 0.07);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #card-display:not(:empty):hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(212, 175, 55, 0.18);
+            border-color: rgba(212, 175, 55, 0.45);
         }
 
         #card-display img {
             max-width: 100%;
             height: auto;
             max-height: 380px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         #card-display h2 {
-            color: #2d3748;
-            font-size: 1.4rem;
+            color: #ffffff;
+            font-size: 1.5rem;
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             font-weight: 700;
+            letter-spacing: 0.5px;
+            text-align: center;
         }
 
-        #card-display p {
-            color: #4a5568;
-            font-size: 1rem;
-            line-height: 1.6;
+        .card-astro {
+            color: #d4af37;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .card-description {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            line-height: 1.7;
             margin: 0;
+            padding: 18px 22px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+            box-sizing: border-box;
+            width: 100%;
         }
 
-        @keyframes fadeIn {
+        .card-result-wrapper {
+            animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        @keyframes fadeInScale {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: scale(0.94) translateY(12px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1) translateY(0);
             }
         }
 
@@ -129,14 +173,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
+            background-color: rgba(5, 2, 12, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.35s ease;
             pointer-events: none;
         }
 
@@ -146,16 +191,18 @@
         }
 
         .modal-content {
-            background: #ffffff;
-            padding: 30px;
+            background: rgba(18, 10, 32, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 32px;
             border-radius: 20px;
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             transform: scale(0.9);
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
 
@@ -164,31 +211,32 @@
         }
 
         .modal-content p {
-            color: #2d3748;
-            font-size: 1rem;
-            line-height: 1.6;
+            color: #e2e8f0;
+            font-size: 1.05rem;
+            line-height: 1.7;
             margin-top: 0;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         #modal-close-btn {
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #ffffff;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            padding: 12px 28px;
+            background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 14px 32px;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
             outline: none;
         }
 
         #modal-close-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(118, 75, 162, 0.3);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45), 0 0 15px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.5);
         }
 
         #modal-close-btn:active {
@@ -198,19 +246,20 @@
         /* Footer styles */
         .app-footer {
             text-align: center;
-            padding: 24px 20px;
+            padding: 28px 20px;
             width: 100%;
             box-sizing: border-box;
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(13, 8, 27, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
         }
 
         .app-footer p {
-            color: #4a5568;
+            color: #94a3b8;
             font-size: 0.95rem;
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             font-weight: 400;
         }
 
@@ -219,19 +268,20 @@
             text-decoration: none;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #ffffff;
-            background: #0088cc;
-            padding: 10px 24px;
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
             border-radius: 50px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3), 0 0 10px rgba(212, 175, 55, 0.05);
         }
 
         #telegram-btn:hover {
-            background: #0077b3;
             transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(0, 136, 204, 0.35);
+            box-shadow: 0 6px 20px rgba(0, 136, 204, 0.45), 0 0 15px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         #telegram-btn:active {
@@ -239,11 +289,12 @@
         }
 
         #draw-card-btn:disabled {
-            background: #a0aec0;
+            background: #475569;
+            border-color: rgba(255, 255, 255, 0.1);
             box-shadow: none;
             cursor: not-allowed;
             transform: none;
-            opacity: 0.7;
+            opacity: 0.5;
         }
 
         /* Shuffling deck loader styles */
@@ -273,8 +324,8 @@
             background-size: cover;
             background-position: center;
             border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.1);
             transform-origin: bottom center;
         }
 
@@ -298,11 +349,13 @@
         }
 
         .loader-text {
-            color: #764ba2;
-            font-size: 1.05rem;
+            color: #d4af37;
+            font-size: 1.1rem;
             font-weight: 600;
             animation: pulse-text 1.5s infinite ease-in-out;
             margin: 0;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+            letter-spacing: 0.5px;
         }
 
         @keyframes shuffle-top {
@@ -352,395 +405,473 @@
     </div>
 
     <script>
-                        const cardsDatabase = [
+                                const cardsDatabase = [
             {
                 name: "Актер",
                 description: "Сегодня вы должны сыграть какую-то роль (короля, начальника, ребенка и т.д.).",
+                astro: "планета Меркурий\Солнце, знак Близнецы\Лев.",
                 image: "images/actor.jpeg"
             },
             {
                 name: "Свадьба",
                 description: "Хорошее настроение. Приятная компания. Удачный день.",
+                astro: "планета Солнце\Венера, знак Лев\Весы.",
                 image: "images/wedding.jpeg"
             },
             {
                 name: "Вестник",
                 description: "В этот день вас ожидают перемещения, короткие поездки, много общения, контактов, разговоров по телефону. Этот день можно посвятить бумажной работе: подписанию договоров, контрактов, оформлению справок и т.д.",
+                astro: "планета Меркурий, знак Близнецы.",
                 image: "images/messenger.jpeg"
             },
             {
                 name: "Симболон",
                 description: "Вам сегодня будет сопутствовать удача, особенно в коллективных делах, свободном равноправном партнерстве.",
+                astro: "планета Венера\Юпитер, знак Весы\Стрелец.",
                 image: "images/symbolon.jpeg"
             },
             {
                 name: "Черная Месса",
                 description: "В сегодняшних мероприятиях вам отводиться роль пешки.",
+                astro: "планета Плутон\Юпитер, знак Скорпион\Стрелец.",
                 image: "images/black_mass.jpeg"
             },
             {
                 name: "Возлюбленная",
                 description: "Это день будет посвящен земным, материальным делам. В этот день хорошо заняться собой, своим внешним видом. Можно посетить салон красоты, сауну, спортзал и т.д. Наведите порядок и гармонию вокруг себя: сделайте уборку в квартире, на рабочем месте. Приготовьте вкусный обед или сходите с любимыми в ресторан на ужин.",
+                astro: "планета Венера, знак Телец.",
                 image: "images/beloved.jpeg"
             },
             {
                 name: "Несовместимость",
                 description: "Осознайте и объедините мужское и женское в себе, для того чтобы обрести целостность.",
+                astro: "планета Луна\Солнце, знак Рак\Лев.",
                 image: "images/incompatibility.jpeg"
             },
             {
                 name: "Королевские Дети",
                 description: "Сегодня вы, подобно Манилову, будете строить воздушные замки.",
+                astro: "планета Венера\Нептун, знак Весы\Рыбы.",
                 image: "images/royal_children.jpeg"
             },
             {
                 name: "Шут",
                 description: "Сегодня можно сделать то, чего вы раньше никогда не делали, и получить от этого удовольствие или пользу. Возможен небольшой рывок вверх. Приветствуются нестандартные решения.",
+                astro: "планета Уран, знак Водолей.",
                 image: "images/jester.jpeg"
             },
             {
                 name: "Эго",
                 description: "Вы должны реализовать свой творческий потенциал, заняться любимым делом. Надо быть в центре внимания.",
+                astro: "планета Солнце, знак Лев.",
                 image: "images/ego.jpeg"
             },
             {
                 name: "Фортуна",
                 description: "На редкость благоприятное стечение обстоятельств.",
+                astro: "планета Солнце\Юпитер, знак Лев\Стрелец.",
                 image: "images/fortune.jpeg"
             },
             {
                 name: "Ярмарка Тщеславия",
                 description: "Вы можете сегодня нанести кому-то визит вежливости.",
+                astro: "планета Меркурий\Венера, знак Близнецы\Весы.",
                 image: "images/vanity_fair.jpeg"
             },
             {
                 name: "Цепи",
                 description: "Сегодня на вас возложат тягостные обязательства, которые не хочется, но придется выполнять.",
+                astro: "планета Венера\Плутон, знак Весы\Скорпион.",
                 image: "images/chains.jpeg"
             },
             {
                 name: "Страх",
                 description: "Сегодня во всем происходящем вы будете только плохое. Возможно проявление какой-то пугающей ситуации, которую вы будете драматизировать.",
+                astro: "планета Меркурий\Сатурн, знак Дева\Козерог.",
                 image: "images/fear.jpeg"
             },
             {
                 name: "Феникс",
                 description: "На бытовом уровне сегодня все будет ломаться.",
+                astro: "планета Плутон\Уран, знак Скорпион\Водолей.",
                 image: "images/phoenix.jpeg"
             },
             {
                 name: "Чаша Грааля",
                 description: "Сегодня вам представиться маленькая возможность приблизиться к большой цели. Но если нет внутренней готовности, все будет напрасно.",
+                astro: "планета Уран\Нептун, знак Водолей\Рыбы.",
                 image: "images/grail.jpeg"
             },
             {
                 name: "Фурии",
                 description: "День сложный, поэтому нужно при необходимости «выпустить пар», не держать отрицательные эмоции внутри, т.к. это разрушительно действует на ваше здоровье.",
+                astro: "планета Меркурий\Уран, знак Дева\Водолей.",
                 image: "images/furies.jpeg"
             },
             {
                 name: "Снежная Королева",
                 description: "Сегодня день одиночества и уединения.",
+                astro: "планета Луна\Сатурн, знак Рак\Козерог.",
                 image: "images/snow_queen.jpeg"
             },
             {
                 name: "Спящая Красавица",
                 description: "День спокойный, без событий.",
+                astro: "планета Луна\Нептун, знак Рак\Рыбы.",
                 image: "images/sleeping_beauty.jpeg"
             },
             {
                 name: "Эрос",
                 description: "Уделить внимание теме взаимоотношений в чувственно-эротическом плане. Воздержание сегодня не желательно.",
+                astro: "планета Марс\Венера, знак Овен\Телец.",
                 image: "images/eros.jpg"
             },
             {
                 name: "Семья",
                 description: "Заняться семьей, детьми.",
+                astro: "планета Луна\Венера, знак Рак\Весы.",
                 image: "images/family.jpeg"
             },
             {
                 name: "Ссора",
                 description: "Сегодня очень конфликтный день. Возможны ссоры от мелких до серьезных.",
+                astro: "планета Марс\Венера, знак Овен\Весы.",
                 image: "images/quarrel.jpeg"
             },
             {
                 name: "Служительница",
                 description: "В этот день необходимо уделить внимание повседневным обязанностям.",
+                astro: "планета Меркурий, знак Дева.",
                 image: "images/servant.jpeg"
             },
             {
                 name: "Мастер",
                 description: "Этот день посвятите себе, побудьте в одиночестве. Полюбите это состояние.",
+                astro: "планета Сатурн, знак Козерог.",
                 image: "images/master.jpeg"
             },
             {
                 name: "Мать",
                 description: "Проявите заботу о своей семье, детях, муже. Это также день беспокойства о деле, которое для вас жизненно важно. Проявите внимание к своим родителям.",
+                astro: "планета Луна, знак Рак.",
                 image: "images/mother.jpeg"
             },
             {
                 name: "Пара",
                 description: "Найдите себе пару или поддерживайте уже сложившиеся отношения, не ущемляя ничьи интересы.",
+                astro: "планета Венера, знак Весы.",
                 image: "images/couple.jpeg"
             },
             {
                 name: "Проповедник",
                 description: "Сходить в храм, на групповую медитацию, заняться духовными практиками. В социальной жизни – общение с властными структурами, чиновниками.",
+                astro: "планета Юпитер, знак Стрелец.",
                 image: "images/preacher.jpeg"
             },
             {
                 name: "Искуситель",
                 description: "Осознать свои тайные желания и искушения, постараться увидеть свою темную (теневую) сторону.",
+                astro: "планета Плутон, знак Скорпион.",
                 image: "images/seducer.jpeg"
             },
             {
                 name: "Ангел",
                 description: "Сегодня можно научиться разделять и идентифицировать свои эмоции и чувства. Этот день можно посвятить медитации, духовным практикам, молитве. Важных событий не будет.",
+                astro: "планета Нептун, знак Рыбы.",
                 image: "images/angel.jpeg"
             },
             {
                 name: "Воин",
                 description: "Это день активности, подъема внутренних сил. В этот день вам важно проявлять инициативу, действовать методом проб и ошибок. Необходимо самоутверждение.",
+                astro: "планета Марс, знак Овен.",
                 image: "images/warrior.jpeg"
             },
             {
                 name: "Мнемозина",
                 description: "Никаких значительных внешних событий сегодня не будет. День хорошо посвятить воспоминаниям, прошлому.",
+                astro: "планета Луна\Юпитер, знак Рак\Стрелец.",
                 image: "images/mnemosyne.jpeg"
             },
             {
                 name: "Тишина",
                 description: "Сегодня вся ваша активность должна быть направлена на внутреннюю работу. Внешних событий нет.",
+                astro: "планета Меркурий\Нептун, знак Близнецы\Рыбы.",
                 image: "images/silence.jpeg"
             },
             {
                 name: "Мечтательный Джонни",
                 description: "Сегодня вы слишком невнимательны к окружающему миру. Постарайтесь вернуться с небес на землю, и посмотреть внимательнее под ноги.",
+                astro: "планета Меркурий\Уран, знак Близнецы\Водолей.",
                 image: "images/dreamy_johnny.jpeg"
             },
             {
                 name: "Мойра",
                 description: "В этот день не будет ничего особенного и необычного.",
+                astro: "планета Сатурн\Нептун, знак Козерог\Рыбы.",
                 image: "images/moira.jpeg"
             },
             {
                 name: "Несчастье",
                 description: "День сложный, много препятствий и ограничений, которые необходимо преодолеть.",
+                astro: "планета Меркурий\Сатурн, знак Близнецы\Козерог.",
                 image: "images/misfortune.jpeg"
             },
             {
                 name: "Обман",
                 description: "Не старайтесь перехитрить всех вокруг, т.к. ложь со временем раскроется.",
+                astro: "планета Меркурий\Нептун, знак Дева\Рыбы.",
                 image: "images/deception.jpeg"
             },
             {
                 name: "Освобождение",
                 description: "Вы попали в новую непривычную обстановку и должны приспособиться к ней. Это трудно, так как помощи ждать неоткуда.",
+                astro: "планета Луна\Уран, знак Рак\Водолей.",
                 image: "images/liberation.jpeg"
             },
             {
                 name: "Падение",
                 description: "Сегодня возникнут ситуации, в которых придется пережить падение (в широком смысле) и в результате, возможно, изменить собственную самооценку, осадить свое эго.",
+                astro: "планета Солнце\Уран, знак Лев\Водолей.",
                 image: "images/fall.jpeg"
             },
             {
                 name: "Пестрый Дудочник",
                 description: "Возможно, что сегодня вас будет ожидать похожий сценарий.",
+                astro: "планета Меркурий\Плутон, знак Близнецы\Скорпион.",
                 image: "images/pied_piper.jpeg"
             },
             {
                 name: "Пифия",
                 description: "Сегодня вы настроены слушать свою интуицию. Ждите какого-то важного знака.",
+                astro: "планета Юпитер\Нептун, знак Стрелец\Рыбы.",
                 image: "images/pythia.jpeg"
             },
             {
                 name: "Плен",
                 description: "Сегодня у вас будет много планов, но в силу каких-то причин их исполнение невозможно.",
+                astro: "планета Сатурн\Уран, знак Козерог\Водолей.",
                 image: "images/captivity.jpeg"
             },
             {
                 name: "Материя и дух",
                 description: "Для того чтобы получить знания, духовную пищу, сегодня надо пожертвовать чем-то.",
+                astro: "планета Венера\Юпитер, знак Телец\Стрелец.",
                 image: "images/matter_and_spirit.jpeg"
             },
             {
                 name: "Мастер и Ученик",
                 description: "Сегодня или вы учите других, или вас кто-то будет обучать новому.",
+                astro: "планета Меркурий\Юпитер, знак Близнецы\Стрелец.",
                 image: "images/master_and_disciple.jpeg"
             },
             {
                 name: "Ложный Нимб",
                 description: "Эмоциональная неуравновешенность сегодня станет вашей сутью. В течение дня взгляды на то или иное могут меняться диаметрально.",
+                astro: "планета Плутон\Нептун, знак Скорпион\Рыбы.",
                 image: "images/false_halo.jpeg"
             },
             {
                 name: "Королева",
                 description: "Сегодня удачный день. Вы будете блистать, и очаровывать всех вокруг. Много энергии и сил, которые вы можете использовать для достижения своих целей.",
+                astro: "планета Венера\Солнце, знак Телец\Лев.",
                 image: "images/queen.jpeg"
             },
             {
                 name: "Крестоносец",
                 description: "В вас сегодня может проснуться Крестоносец, и вы начнете бороться со всеми за свою идею.",
+                astro: "планета Марс\Юпитер, знак Овен\Стрелец.",
                 image: "images/crusader.jpeg"
             },
             {
                 name: "Марионетка",
                 description: "Вами сегодня могут манипулировать, использовать в своих целях.",
+                astro: "планета Венера\Плутон, знак Телец\Скорпион.",
                 image: "images/marionette.jpeg"
             },
             {
                 name: "Вампир",
                 description: "Сегодня вам будет трудно проявить свой потенциал. Возможно нехватка жизненных сил. Найдите дополнительный источник энергии.",
+                astro: "планета Марс\Плутон, знак Овен\Скорпион.",
                 image: "images/vampire.jpeg"
             },
             {
                 name: "Будда",
                 description: "Сегодня не стоит планировать важные дела. Мы лишь выжидаем, отказываемся от активных действий.",
+                astro: "планета Солнце\Нептун, знак Лев\Рыбы.",
                 image: "images/buddha.jpeg"
             },
             {
                 name: "Инквизиция",
                 description: "Сегодня вы будете склонны обвинять, осуждать кого-то.",
+                astro: "планета Меркурий\Юпитер, знак Дева\Стрелец.",
                 image: "images/inquisition.jpeg"
             },
             {
                 name: "Исповедь",
                 description: "Сегодня возможен какой-то доверительный разговор. Вы можете предстать как в роли проповедника, так и в роли исповедующегося.",
+                astro: "планета Юпитер\Сатурн, знак Стрелец\Козерог.",
                 image: "images/confession.jpeg"
             },
             {
                 name: "Квантовый Скачек",
                 description: "Сегодня для вас откроется возможность сделать небольшой рывок, скачок вперед, вверх.",
+                astro: "планета Юпитер\Уран, знак Стрелец\Водолей.",
                 image: "images/quantum_leap.png"
             },
             {
                 name: "Забота",
                 description: "Сегодня вам предстоит много хлопот и забот.",
+                astro: "планета Луна\Меркурий, знак Рак\Дева.",
                 image: "images/care.jpeg"
             },
             {
                 name: "Единорог",
                 description: "Сегодня можно пересмотреть свои цели, определить их реальность и достижимость, проанализировать методы, с помощью которых их реальнее всего добиться.",
+                astro: "планета Марс\Меркурий, знак Овен\Дева.",
                 image: "images/unicorn.jpeg"
             },
             {
                 name: "Добрый Пастырь",
                 description: "Сегодня время отдавать, почувствовать свою причастность к окружающему миру.",
+                astro: "планета Венера\Сатурн, знак Телец\Козерог.",
                 image: "images/good_shepherd.jpeg"
             },
             {
                 name: "Депрессия",
                 description: "День без особых событий. Возможна задержка в делах из-за упадка сил, оттягивание.",
+                astro: "планета Плутон\Сатурн, знак Скорпион\Козерог.",
                 image: "images/depression.jpeg"
             },
             {
                 name: "Вдова",
                 description: "Сегодня не слишком благоприятный день. Дела, намеченные на сегодня, будут отложены, контакты отменены. Срыв встреч и договоренностей.",
+                astro: "планета Венера\Сатурн, знак Весы\Козерог.",
                 image: "images/widow.jpeg"
             },
             {
                 name: "Злобный Смутьян",
                 description: "Если вы почувствуете внутри себя излишнее напряжение, то следует «выпустить пар».",
+                astro: "планета Марс\Уран, знак Овен\Водолей.",
                 image: "images/malignant_troublemaker.jpeg"
             },
             {
                 name: "Золотая Клетка",
                 description: "Вы испытываете недоверие к миру, боитесь что-то потерять, поэтому скрываете это от окружающих.",
+                astro: "планета Венера\Венера, знак Телец\Весы.",
                 image: "images/golden_cage.jpeg"
             },
             {
                 name: "Золотые Девушки",
                 description: "Сегодня хороший день. Вы будете гармонично сочетать внутренние потребности с внешними действиям.",
+                astro: "планета Венера\Меркурий, знак Телец\Близнецы.",
                 image: "images/golden_girls.jpeg"
             },
             {
                 name: "Бремя",
                 description: "День тяжелый. Возможно, вы возьмете на себя непосильную ношу. К концу дня полная изможденность.",
+                astro: "планета Солнце\Сатурн, знак Лев\Козерог.",
                 image: "images/burden.jpeg"
             },
             {
                 name: "Больной Король",
                 description: "Лучше всего сегодня отключить телефон, остаться в одиночестве.",
+                astro: "планета Солнце\Меркурий, знак Лев\Дева.",
                 image: "images/sick_king.jpeg"
             },
             {
                 name: "Битва",
                 description: "Сегодня довольно активный, интенсивный день. Будет много событий, проверок вас на прочность. Надо выложиться в полную силу. Отстаивать свою точку зрения. Проявите себя, силу своей личности.",
+                astro: "планета Марс\Солнце, знак Овен\Лев.",
                 image: "images/battle.jpeg"
             },
             {
                 name: "Безжалостные Люди",
                 description: "В этот день важно быть выше пересудов, сплетен, разговоров о другом человеке. Критику стоит попридержать.",
+                astro: "планета Марс\Меркурий, знак Овен\Близнецы.",
                 image: "images/ruthless_people.jpeg"
             },
             {
                 name: "Артикуляция",
                 description: "Сегодня вам придет какая-то информация, которую нужно правильно понять.",
+                astro: "планета Меркурий\Луна, знак Близнецы\Рак.",
                 image: "images/articulation.jpeg"
             },
             {
                 name: "Алхимик",
                 description: "Сегодня вы будете увлечены своим делом, но в нем много искусственности.",
+                astro: "планета Солнце\Плутон, знак Лев\Скорпион.",
                 image: "images/alchemist.jpeg"
             },
             {
                 name: "абсолютный дурак",
                 description: "Сегодня мы готовы жить в воображаемом мире. Возможно, пришло время отдохнуть.",
+                astro: "планета Марс\Нептун, знак Овен\Рыбы.",
                 image: "images/absolute_fool.jpeg"
             },
             {
                 name: "Аборт",
                 description: "Сегодня у вас может наблюдаться упадок сил, плохое самочувствие.",
+                astro: "планета Луна\Плутон, знак Рак\Скорпион.",
                 image: "images/abortion.jpg"
             },
             {
                 name: "Два лица Евы",
                 description: "Пора сделать выбор между двумя возможностями, двумя ролями – личным и общественным, домом и работой и т.д.",
+                astro: "планета Венера\Луна, знак Телец\Рак.",
                 image: "images/two_faces_of_eve.jpg"
             },
             {
                 name: "Самобичевание",
                 description: "Сегодня вы будете крайнее недовольны собой, своими действиями.",
+                astro: "планета Меркурий\Плутон, знак Дева\Скорпион.",
                 image: "images/self_flagellation.jpeg"
             },
             {
                 name: "Сад Духов",
                 description: "Сегодняшний день хорош, чтобы почувствовать, что у каждой вещи есть душа.",
+                astro: "планета Венера\Нептун, знак Телец\Рыбы.",
                 image: "images/garden_of_spirits.jpeg"
             },
             {
                 name: "Расставание",
                 description: "Новые начинания, самостоятельные действия принесут вам сегодня удовольствие. Возможны неожиданные поездки.",
+                astro: "планета Венера\Уран, знак Весы\Водолей.",
                 image: "images/parting.jpeg"
             },
             {
                 name: "Раздел Имущества",
                 description: "Сегодня важно отказаться от старого, отправиться на поиски новых форм.",
+                astro: "планета Венера\Уран, знак Телец\Водолей.",
                 image: "images/division_of_property.jpeg"
             },
             {
                 name: "Привязка",
                 description: "Сегодня вы можете получить ощутимый материальный результат. Распорядитесь им достойно.",
+                astro: "планета Венера\Меркурий, знак Телец\Дева.",
                 image: "images/attachment.jpeg"
             },
             {
                 name: "Стратег",
                 description: "Хорошо сегодня составить план на будущее. Заняться нудной, повседневной работой",
+                astro: "планета Меркурий\Меркурий, знак Близнецы\Дева.",
                 image: "images/strategist.jpeg"
             },
             {
                 name: "Предотвращение",
                 description: "Сегодня вы будет пытаться делать не свое дело. Постарайтесь во время осознать это.",
+                astro: "планета Марс\Сатурн, знак Овен\Козерог.",
                 image: "images/prevention.jpeg"
             },
             {
                 name: "Вызов",
                 description: "Сегодня довольно деструктивный день. Могут быть провокации, старайтесь избегать гнева и желания сделать назло.",
+                astro: "планета Марс\Луна, знак Овен\Рак.",
                 image: "images/challenge.jpeg"
             },
             {
                 name: "Повседневная Жизнь",
                 description: "Сегодня день монотонного труда. Выполнение ежедневных обязанностей.",
+                astro: "планета Меркурий\Венера, знак Дева\Весы.",
                 image: "images/everyday_life.jpeg"
             }
         ];
@@ -775,9 +906,12 @@
                 const randomCard = cardsDatabase[randomIndex];
                 
                 cardDisplay.innerHTML = `
-                    <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
-                    <h2><strong>${randomCard.name}</strong></h2>
-                    <p>${randomCard.description}</p>
+                    <div class="card-result-wrapper">
+                        <img src="${randomCard.image}" alt="${randomCard.name}" onerror="this.onerror=null; this.src='https://picsum.photos/300/400?random=${randomIndex}';">
+                        <h2><strong>${randomCard.name}</strong></h2>
+                        <div class="card-astro">${randomCard.astro || ""}</div>
+                        <p class="card-description">${randomCard.description}</p>
+                    </div>
                 `;
                 // Возвращаем активность кнопке
                 drawButton.disabled = false;
